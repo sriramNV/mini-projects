@@ -1,0 +1,1 @@
+Few simple mini-projects that made me apply the few concepts that I have learned.
