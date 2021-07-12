@@ -20,8 +20,7 @@ SCREEN_WIDTH = 800
 FPS = 25
 KEY = {"UP":1,"DOWN":2,"RIGHT":4,"LEFT":3}
 
-screen = pygame.display.set_mode((SCREEN_HEIGHT,SCREEN_WIDTH),pygame.HWSURFACE) 
-
+screen = pygame.display.set_mode((SCREEN_HEIGHT,SCREEN_WIDTH),pygame.HWSURFACE)
 score_font = pygame.font.Font(None,38)
 score_num_font = pygame.font.Font(None,28)
 game_over_font = pygame.font.Font(None, 48)
