@@ -19,9 +19,20 @@ var selectedNum;
 var selectedTile;
 var disableSelect;
 
+// helper functions
 function id(id){
     return document.getElementById(id);
 }
+
+function qs(selector){
+    return document.querySelector(selector);
+}
+
+function qsa(selector){
+    return document.querySelectorAll(selector);
+}
+
+// helper functions ends
 
 window.onload = function(){
     id("newGame").addEventListener("click", startGame);
@@ -44,5 +55,49 @@ function startGame(){
 
 function generateBoard(board){
     // clear previous board
+    clearPrevious();
+
+    let idCount = 0;
+
+    for(let i = 0; i < 81; i++){
+        let tile = document.createElement("p");
+        if(board.charAt(i) != '-'){
+            tile.textContent = board.charAt(i);
+        }else{
+            // add click event to tile
+        }
+        tile.id = idCount;
+        idCount++;
+
+        tile.classList.add("tile");
+        if((tile.id > 17 && tile.id < 27) || (tile.id > 44 && tile.id < 54)){
+            tile.classList.add("bottomBorder");
+        }
+        if((tile.id+1) % 9 == 3 || (tile.id +1) % 9 == 6){
+            tile.classList.add("rightBorder");
+        }
+
+        id("board").appendChild(tile);
+    }
 }
+
+function clearPrevious(){
+    let tiles = qsa(".tile");
+
+    for(let i = 0; i < tiles.length; i++){
+        tiles[i].remove();
+    }
+
+    if(timer) clearTimeout(timer);
+
+    for(let i = 0 ; i < id("numContainer").children.length; i++){
+        id("numContainer").children[i].classList.remove("selected");
+    }
+
+    selectedTile = null;
+    selectedNum = null;
+
+}
+
+
 
