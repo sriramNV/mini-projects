@@ -2,9 +2,19 @@
     display: none;
 }
 
-body.dark{
+body.dark {
     background-color: #222;
     color: wheat;
+}
+body.dark p{
+    background-color: #222;
+    color: wheat;
+    border: 1px solid wheat;
+}
+body.dark #numContainer p{
+    background-color: #222;
+    color: wheat;
+    border: 1px solid wheat;
 }
 
 header{

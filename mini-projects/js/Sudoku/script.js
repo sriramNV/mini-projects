@@ -38,6 +38,7 @@ window.onload = function(){
     id("newGame").addEventListener("click", startGame);
 }
 
+
 function startGame(){
     // set difficulty
     if(id("easyDiff").checked) board = easy[0];
@@ -51,6 +52,40 @@ function startGame(){
 
     // generates board based on difficulty
     generateBoard(board);
+
+    startTimer();
+
+    if(id("theme-1").checked){
+        qs("body").classList.remove("dark");
+    }
+    else{
+        qs("body").classList.add("dark");
+    }
+
+    id("numContainer").classList.remove("hidden");
+}
+
+
+function startTimer(){
+    if(id("time-1").checked) timeRemain = 180;
+    else if(id("time-2").checked) timeRemain = 300;
+    else timeRemain = 600;
+
+    id("timer").textContent = timeConversion(timeRemain);
+    timer = setInterval(function(){
+        timeRemain--;
+        if(timeRemain === 0) endGame();
+        id("timer").textContent = timeConversion(timeRemain);
+    }, 1000);
+}
+
+function timeConversion(timeInSec){
+    // convert seconds into string of MM:SS format
+    let min = Math.floor(timeInSec / 60);
+    if(min < 10) min = "0" + min;
+    let sec = timeInSec % 60;
+    if(sec < 10) sec = "0" + sec;
+    return min + ":" + sec;
 }
 
 function generateBoard(board){
