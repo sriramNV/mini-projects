@@ -75,5 +75,25 @@ p#timer, p#lives{
     text-align: center;
     margin: 0px;
     vertical-align: middle;
-    
+    font-size: 40pt;
+}
+
+p.selected{
+    background-color: lightblue;
+}
+p.incorrect{
+    color: red;
+}
+
+.rightBorder{
+    border-right: 4px solid black;
+}
+
+.bottomBorder{
+    border-bottom: 4px solid black;
+}
+
+footer{
+    background-color: lightgray;
+    text-align: center;
 }
