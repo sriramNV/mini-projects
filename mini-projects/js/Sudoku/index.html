@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="./style.css">
     <title>Sudoku</title>
     <script src="./script.js"></script>
-</head>
-<body>
     <header>
         <h1>Sudoku Game</h1>
         <div id="setup-game">
@@ -16,24 +14,46 @@
                 <h3>
                     Choose Difficulty:- </h3>
                 <label for=""><input type="radio" id="easyDiff" name="diff" value="easy" checked> Easy </label>
-                <label for=""><input type="radio" id="midDiff" name="diff" value="medium" checked>Medium</label>
-                <label for=""><input type="radio" id="hardDiff" name="diff" value="hard" checked>Hard</label>
+                <label for=""><input type="radio" id="midDiff" name="diff" value="medium" >Medium</label>
+                <label for=""><input type="radio" id="hardDiff" name="diff" value="hard" >Hard</label>
             </div>
             <div id="time">
                 <h3>Choose Time:- </h3>
-                <label for="">3 Min</label>
-                <label for="">5 Min</label>
-                <label for="">10 Min</label>
+                <label for=""><input type="radio" id="time-1" name="time" value="three" checked>3 Min</label>
+                <label for=""><input type="radio" id="time-2" name="time" value="five">5 Min</label>
+                <label for=""><input type="radio" id="time-3" name="time" value="ten">10 Min</label>
             </div>
             <div id="theme">
                 <h3>Choose Theme:- </h3>
-                <label for="">Light</label>
-                <label for="">Dark</label>
+                <label for=""><input type="radio" id="theme-1" name="theme" value="light" checked>Light</label>
+                <label for=""><input type="radio" id="theme-2" name="theme" value="dark">Dark</label>
             </div>
         </div>
+        <button id="newGame">Create New Game</button>
     </header>
-    <footer>
-
-    </footer>
+</head>
+<body>
+    <div id="stats">
+        <p id="timer"> </p>
+        <p id="lives"> </p>
+    </div>
+    <div id="game">
+        <div id="board"></div>
+        <div id="numContainer" class="hidden">
+            <p id="one">1</p>
+            <p id="two">2</p>
+            <p id="three">3</p>
+            <p id="four">4</p>
+            <p id="five">5</p>
+            <p id="six">6</p>
+            <p id="seven">7</p>
+            <p id="eight">8</p>
+            <p id="nine">9</p>
+        </div>
+    </div>
 </body>
+<footer>
+<p>Made by Sriram N V</p>
+</footer>
+
 </html>
