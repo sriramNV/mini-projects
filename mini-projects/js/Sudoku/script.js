@@ -36,8 +36,95 @@ function qsa(selector){
 
 window.onload = function(){
     id("newGame").addEventListener("click", startGame);
+
+    for(let i = 0; i < id("numContainer").children.length; i++){
+
+        id("numContainer").children[i].addEventListener("click",function(){
+            if (!disableSelect){
+                if(this.classList.contains("selected")) {
+                    this.classList.remove("selected");
+                    selectedNum = null;
+                }else{
+                    for(let j = 0; j < 9; j++){
+                        id("numContainer").children[j].classList.remove("selected");
+                    }
+                this.classList.add("selected");
+                selectedNum = this;
+                updateMove();
+                }
+            }
+        });
+    }
 }
 
+function updateMove(){
+    if(selectedTile && selectedNum){
+        selectedTile.textContent = selectedNum.textContent;
+
+        if(checkCorrect(selectedTile)){
+            selectedTile.classList.remove("selected");
+            selectedNum.classList.remove("selected");
+
+            selectedNum = null;
+            selectedTile = null;
+
+            if(checkDone()){
+                endGame();
+            }
+
+        }else{
+            disableSelect = true;
+
+            selectedTile.classList.add("incorrect");
+
+            setTimeout(function(){
+                lives--;
+                if(lives === 0) {endGame();}
+                else{
+                    id("lives").textContent = `Lives Remaining: ${lives}`;
+                    disableSelect = false;
+                }
+                selectedTile.classList.remove("incorrect");
+                selectedTile.classList.remove("selected");
+                selectedNum.classList.remove("selected");
+
+                selectedTile.textContent = "";
+                selectedTile = null;
+                selectedNum = null;
+            }, 1000);
+        }
+    }
+}
+
+function checkDone(){
+    let tiles = qsa.apply(".tile");
+    for(let i = 0; i < tiles.length; i++){
+        if(tiles[i].textContent === "") return false;
+    }
+    return true;
+}
+
+function endGame(){
+    disableSelect = true;
+    clearTimeout(timer);
+
+    if(lives === 0 || timeRemain === 0){
+        id("lives").textContent = "YOU LOST!!!!";
+    }
+    else{
+        id("lives").textContent = "YOU WON!!!";
+    }
+}
+
+function checkCorrect(tile){
+    let solution;
+    if(id("easyDiff").checked) solution = easy[1];
+    else if(id("midDiff").checked) solution = medium[1];
+    else solution = hard[1];
+
+    if(solution.charAt(tile.id) == tile.textContent) return true;
+    else return false;
+}
 
 function startGame(){
     // set difficulty
@@ -100,6 +187,22 @@ function generateBoard(board){
             tile.textContent = board.charAt(i);
         }else{
             // add click event to tile
+            tile.addEventListener("click", function(){
+                if(!disableSelect){
+                    if(tile.classList.contains("selected")){
+                        tile.classList.remove("selected");
+                        selectedTile = null;
+                    }
+                    else{
+                        for(let i = 0; i < 81; i++){
+                            qsa(".tile")[i].classList.remove("selected");
+                        }
+                        tile.classList.add("selected");
+                        selectedTile = tile;
+                        updateMove();
+                    }
+                }
+            });
         }
         tile.id = idCount;
         idCount++;
