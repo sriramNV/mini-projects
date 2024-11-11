@@ -20,7 +20,7 @@ SCREEN_WIDTH = 800
 FPS = 25
 KEY = {"UP":1,"DOWN":2,"RIGHT":4,"LEFT":3}
 
-screen = pygame.display.set_mode((SCREEN_HEIGHT,SCREEN_WIDTH),pygame.HWSURFACE)
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),pygame.HWSURFACE)
 score_font = pygame.font.Font(None,38)
 score_num_font = pygame.font.Font(None,28)
 game_over_font = pygame.font.Font(None, 48)
@@ -39,8 +39,8 @@ class Apple:
         self.state = state
         self.color = pygame.color.Color("orange")
 
-        def draw(self,screen):
-            pygame.draw.rect(screen,self.color,(self.x,self.y,APPLE_SIZE,APPLE_SIZE),0)
+    def draw(self,screen):
+        pygame.draw.rect(screen,self.color,(self.x,self.y,APPLE_SIZE,APPLE_SIZE),0)
 
 class segment:
     def __init__(self,x,y):
@@ -64,7 +64,7 @@ class Snake:
     def move(self):
         last_element = len(self.stack) - 1
         while(last_element != 0):
-            self.stack[last_element].direction = self.stack[last_element].direction
+            self.stack[last_element].direction = self.stack[last_element - 1].direction
             self.stack[last_element].x = self.stack[last_element - 1].x
             self.stack[last_element].y = self.stack[last_element - 1].y
             last_element -= 1
@@ -129,14 +129,14 @@ class Snake:
 
     def checkCrashing(self):
         counter = 1
-        while(counter < len(self.stack - 1)):
+        while(counter < len(self.stack) - 1):
             if(checkCollision(self.stack[0], SNAKE_SIZE, self.stack[counter],SNAKE_SIZE) and self.stack[counter].color != "NULL"):
                 return True
             counter += 1
         return False
 
     def draw(self, screen):
-        pygame.draw.ret(screen, pygame.color.Color("green"), (self.stack[0].x, self.stack[0].y, SNAKE_SIZE, SNAKE_SIZE),0)
+        pygame.draw.rect(screen, pygame.color.Color("green"), (self.stack[0].x, self.stack[0].y, SNAKE_SIZE, SNAKE_SIZE),0)
         counter = 1
         while(counter < len(self.stack)):
             if(self.stack[counter].color == "NULL"):
@@ -148,7 +148,7 @@ class Snake:
 
 
 def checkCollision(posA, aS, posB, bS):
-    if (posA.x < posB.x+bS and posA.x+aS > posB.x and posA.y<posB.bS and posA.y+aS > posB.y):
+    if (posA.x < posB.x+bS and posA.x+aS > posB.x and posA.y < posB.y + bS and posA.y+aS > posB.y):
         return True
     return False
 
@@ -161,7 +161,7 @@ def checkLimits(snake):
     if(snake.y > SCREEN_HEIGHT):
         snake.y = SNAKE_SIZE
     if(snake.y < 0):
-        snake.y - SCREEN_HEIGHT - SNAKE_SIZE
+        snake.y = SCREEN_HEIGHT - SNAKE_SIZE
 
 def getKey():
     for event in pygame.event.get():
@@ -207,7 +207,7 @@ def endGame():
     sys.exit(0)
 
 def drawScore(score):
-    score_num = score_num_font.render(str(score),1,pygame,pygame.Color("red"))
+    score_num = score_num_font.render(str(score),1,pygame.Color("red"))
     screen.blit(score_msg, (SCREEN_WIDTH - score_msg_size[0]-60,10))
     screen.blit(score_num,(SCREEN_WIDTH-45,14))
 
@@ -229,7 +229,8 @@ def respawnApple(apples, index, sx, sy):
         y = SCREEN_HEIGHT/2 + radius * math.sin(angle)
         if(x == sx and y == sy):
             continue
-    newApple = Apple(x,y,1)
+        newApple = Apple(x,y,1)
+        counter += 1
     apples[index] = newApple
 
 def respawnApples(apples, quantity, sx, sy):
@@ -277,6 +278,10 @@ def main():
         checkLimits(mySnake)
         if(mySnake.checkCrashing() == True):
             endGame()
+        
+        if(keyPress):
+            mySnake.setDirection(keyPress)
+        mySnake.move()
 
         for myApple in apples:
             if(myApple.state == 1):
@@ -286,24 +291,22 @@ def main():
                     score += 10
                     eatenApple = True
 
-                if(keyPress):
-                    mySnake.setDirection(keyPress)
-                mySnake.move()
+        if(eatenApple == True):
+            eatenApple = False
+            respawnApple(apples, 0, mySnake.getHead().x, mySnake.getHead().y)  # Fixed typo: get() to getHead()
+        
+        # Moved these outside the apple loop
+        screen.fill(background_color)
+        for myApple in apples:
+            if(myApple.state == 1):
+                myApple.draw(screen)
+        mySnake.draw(screen)
+        drawScore(score)
+        gameTime = pygame.time.get_ticks() - startTime
+        drawgameTime(gameTime)
 
-                if(eatenApple == True):
-                    eatenApple = False
-                    respawnApple(apples, 0, mySnake.getHead().x, mySnake.get().y)
-                screen.fill(background_color)
-                for myApple in apples:
-                    if(myApple.state == 1):
-                        myApple.draw(screen)
-                mySnake.draw(screen)
-                drawScore(score)
-                gameTime = pygame.time.get_ticks() - startTime
-                drawgameTime(gameTime)
-
-                pygame.display.flip()
-                pygame.display.update()
+        pygame.display.flip()
+        pygame.display.update()
 
 main()
 
