@@ -67,35 +67,34 @@ def triangle(n):
 
 
 def draw_triangle(a, b, c):
-    # Use the Law of Cosines to calculate the angle between sides a and b
-    angle_C = math.acos((a**2 + b**2 - c**2) / (2 * a * b))  # Angle at vertex C
     
-    # Calculate the coordinates of the three vertices
-    A = (0, 0)  # First vertex at origin
-    B = (b, 0)  # Second vertex along the x-axis
+    angle_C = math.acos((a**2 + b**2 - c**2) / (2 * a * b))  
     
-    # Use polar coordinates to find the third vertex
+    
+    A = (0, 0)
+    B = (b, 0)
+    
+    
     C_x = a * math.cos(angle_C)
     C_y = a * math.sin(angle_C)
     C = (C_x, C_y)
     
-    # Define the x and y coordinates for the triangle
+    
     x = [A[0], B[0], C[0], A[0]]
     y = [A[1], B[1], C[1], A[1]]
     
-    # Create the plot
+
     plt.figure()
-    plt.fill(x, y, 'b', edgecolor='black')  # Fill the triangle with blue and add black edges
+    plt.fill(x, y, 'b', edgecolor='black')
     plt.xlim(min(x)-1, max(x)+1)
     plt.ylim(min(y)-1, max(y)+1)
 
-    # Display the triangle
+
     plt.title(f"Triangle with sides {a}, {b}, {c}")
     plt.grid(True)
     plt.gca().set_aspect('equal', adjustable='box')
     plt.show()
 
-# Example usage with sides a=5, b=6, and c=7
 
 
 
